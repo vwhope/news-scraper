@@ -1,0 +1,28 @@
+{
+  "name": "news-scraper",
+  "version": "1.0.0",
+  "description": "a news-scraper web app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vwhope/news-scraper.git"
+  },
+  "author": "Vicki Hope",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vwhope/news-scraper/issues"
+  },
+  "homepage": "https://github.com/vwhope/news-scraper#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "eslint": "^5.11.1",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^5.4.0",
+    "morgan": "^1.9.1"
+  }
+}
