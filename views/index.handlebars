@@ -16,13 +16,17 @@
                 <img src="{{image}}" alt="article image" class="img-rounded" width=200; height="200">
             </div>
             <div class="card-block px-2">
-                <h4 class="card-title">{{title}}</h4>
+                <h4 class="card-title">
+                  <a href="https://www.medicalnewstoday.com{{link}}">
+                    {{title}}
+                  </a>
+                </h4>
                 <p class="card-text">{{summary}}</p>
                 <a href="#" class="btn btn-danger">Save Article</a>
             </div>
             <div class="w-100"></div>
             <div class="card-footer w-100 text-muted">
-             {{link}} 
+              {{friendlyDate date}}
             </div>
         </div>
         {{/each}}
@@ -30,6 +34,7 @@
 
    </div>
 </div> <!-- end container -->
+
 
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

@@ -25,7 +25,7 @@ var ArticleSchema = new Schema({
   },
   // Article Publish Date
   date: {
-    type: String,
+    type: Number,
     trim: true,
   },
   // Article Summary

@@ -1,4 +1,5 @@
 var express = require("express");
+var handlebars = require("handlebars");
 var exphbs = require("express-handlebars");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -14,6 +15,9 @@ var db = require("./models");
 
 var PORT = process.env.PORT || 3000;
 
+handlebars.registerHelper('friendlyDate', function(unixTimestamp) {
+  return new Date(unixTimestamp).toDateString();
+});
 
 // Initialize Express
 var app = express();
@@ -36,14 +40,14 @@ app.engine(
   })
   );
   app.set("view engine", "handlebars");
-  
+
   // Require routes
   require("./routes/api")(app);
   require("./routes/html")(app);
-  
+
   // Connect to the Mongo DB
   mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
-  
+
   // implement when deploying on Heroku - after get all working locally
   //```js
   // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
@@ -52,11 +56,10 @@ app.engine(
   //```
   //* This code should connect mongoose to your remote mongolab database if deployed, but otherwise will connect to the local mongoHeadlines database on your computer.
   //
-  
+
   // Start the server
   app.listen(PORT, function() {
     console.log("App running on port " + PORT + "!");
   });
-  
+
   module.exports = app;
-  
