@@ -2,9 +2,10 @@
 var db = require("../models");
 var axios = require("axios");
 var cheerio = require("cheerio");
+var mongoose = require("mongoose");
 
 module.exports = function(app) {
-    // Scrape data from Medical News Today, load HTML into $, create record in the mongodb db
+    // Scrape data from Medical News Today, load HTML into $, create record in the mongodb db - WORKS
     app.get("/scrape", function(req, res) {
 
         // Make a request via axios for nutrition news of `medicalnewstoday.com`
@@ -19,6 +20,12 @@ module.exports = function(app) {
                 // Save title, link, image and date each link enclosed in the current element
                 // the $ is a jquery selector wrapper that allows jquery operations on the raw DOM object
                 result.title = $(element).children("a").attr("title");
+
+                var count = await db.Article.estimatedDocumentCount({"title": {$eq: result.title}}).exec();
+                if (count > 0) {
+                    return true;
+                }
+
                 result.link = $(element).children("a").attr("href");
                 result.image = $(element).children("a").children("img").attr("data-src");
                 var date = $(element).children("a").children("span").children("span").text();
@@ -70,14 +77,12 @@ module.exports = function(app) {
     //
 }); // end app.get
 
-// Route for getting all Articles from the db
-app.get("/articles", function(req, res) {
-    // Grab every document in the Articles collection
-    db.Article.find({}).sort({date: 'desc'})
+// Route to get all SAVED articles from db - WORKS
+app.get("/saved", function(req, res) {
+    db.Article.find( { saved: { $eq: true } } )
     .then(function(dbArticle) {
-        // If we were able to successfully find Articles, send them back to the client
-        res.render("index", { newsFeed : dbArticle });
-        //  res.json(dbArticle);
+        // If articles successfully found, send back to client
+        res.render("saved", { savedNewsFeed : dbArticle });
     })
     .catch(function(err) {
         // If an error occurred, send it to the client
@@ -85,6 +90,26 @@ app.get("/articles", function(req, res) {
     });
 });
 
+
+// FYI - BELOW is the format for updating the saved field to "true"
+// this will ONLY update one record/document in collection which is what I want in this case, BUT...
+// to update more than one doc in a collection follow below with " , {multi: true}) "
+// db.articles.update( { _id: ObjectId("5c2e53580b55ca0454c16646") }, {$set: {"saved": true }})
+
+// FYI - to remove an article pass the id that you want to remove
+// db.articles.remove({ _id: ObjectId"5c2e53580b55ca0454c16646"})
+
+// However, in this case, I may not want to remove it from the db,
+// but instead:
+// 1. toggle the "saved" field from True to False so it no longer shows up in the SAVED list
+// 2. clear any notes data associated with that article ID
+// OR I could delete it from the DB and any associated Note
+
+// Remove the entire database newsScraper - WORKS
+app.get("/clear", function(req, res) {
+    mongoose.connection.dropDatabase();
+    res.send("Database dropped.");
+});
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
@@ -112,6 +137,20 @@ app.post("/articles/:id", function(req, res) {
         // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
         return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
     })
+    .then(function(dbArticle) {
+        // If we were able to successfully update an Article, send it back to the client
+        res.json(dbArticle);
+    })
+    .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+    });
+});
+
+// Route for saving/updating an Article's associated Note
+app.post("/save", function(req, res) {
+    // Create a new note and pass the req.body to the entry
+    db.Article.updateOne( { _id: req.body.id }, {$set: {"saved": req.body.saved }})
     .then(function(dbArticle) {
         // If we were able to successfully update an Article, send it back to the client
         res.json(dbArticle);
