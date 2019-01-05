@@ -52,15 +52,18 @@ module.exports = function(app) {
     } // end getData function
 
     const threads = [];
-    $(".listing").children().each(function (i, e) {threads[i] = getData(i, e);});
+    $(".listing").children().each(function (i, e) {
+        threads[i] = getData(i, e);
+    });
 
     // Wait for all requests to complete
     Promise.all(threads).then(function (promises) {
 
-        // Get all articles from the db
-        db.Article.find({}).sort({date: 'desc'})
+        // Get all articles from the db server side
+       // db.Article.find({}).sort({date: 'desc'})
+       db.Article.find(/*{ saved: { $eq: false } }*/).sort({date: 'desc'})
         .then(function(dbArticle) {
-            // If Articles found, send back to client
+            // If article(s) found, send back to client side
             res.render("index", { newsFeed : dbArticle });
         })
         .catch(function(err) {
@@ -108,7 +111,7 @@ module.exports = function(app) {
 
     // SAVE article - WORKS whether saving or unsaving
     app.post("/save", function(req, res) {
-    // Create a new note and pass the req.body to the entry
+
         db.Article.updateOne( { _id: req.body.id }, {$set: {"saved": req.body.saved }})
         .then(function(dbArticle) {
             // If we were able to successfully update an Article, send it back to the client
@@ -121,45 +124,62 @@ module.exports = function(app) {
     });
 
 
-  // SAVE/UPDATE Article's associated Note - WORKS
-  app.post("/notes/:id", function(req, res) {
-    // Create a new note and pass the req.body to the entry
-    var result = {};
-    result.body = req.body.body;
+    // SAVE/UPDATE Article's associated Note - WORKS
+    app.post("/notes/:id", function(req, res) {
+        // Create a new note and pass the req.body to the entry
+        var result = {};
+        result.body = req.body.body;
+        result.article = req.params.id;
 
-    db.Note.create(result)
-    .then(function(dbNote) {
-        // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-        // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-        // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-    })
-    .then(function(dbArticle) {
-        // If we were able to successfully update an Article, send it back to the client
-        res.json(dbArticle);
-    })
-    .catch(function(err) {
-        // If an error occurred, send it to the client
-        res.json(err);
+        db.Note.create(result)
+        .then(function(dbArticle) {
+            // If we were able to successfully update an Article, send it back to the client
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+        });
     });
-});
 
+    app.post("/deleteNote/:id", function(req, res) {
 
-// Route to get specific Article by id, populate it with it's note
-// app.get("/articles/:id", function(req, res) {
-//     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-//     db.Article.findOne({ _id: req.params.id })
-//     // ..and populate all of the notes associated with it
-//     .populate("note")
-//     .then(function(dbArticle) {
-//         // If we were able to successfully find an Article with the given id, send it back to the client
-//         res.json(dbArticle);
-//     })
-//     .catch(function(err) {
-//         // If an error occurred, send it to the client
-//         res.json(err);
-//     });
-// });
+        db.Note.remove({ _id: req.params.id})
+        .then(function() {
+            res.json(true);
+        })
+        .catch(function(err) {
+            res.json(err);
+        });
+    });
+
+    // Route to get specific Article by id, populate it with its note
+    app.get("/articles/:id", function(req, res) {
+    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+        db.Article.findOne({ _id: req.params.id })
+        .then(function(dbArticle) {
+
+            // If we were able to successfully find an Article with the given id, send it back to the client side
+
+            db.Note.find({article: dbArticle._id})
+            .then(function(notes) {
+
+                var result = {};
+                result.article = dbArticle;
+                result.notes = notes;
+                res.json(result);
+            })
+            .catch(function(err) {
+                console.log(err);
+                res.json(err);
+            });
+        })
+        .catch(function(err) {
+            // If an error occurred, send it to the client
+            console.log(err);
+            res.json(err);
+        });
+    });
 
 // Render 404 page for any unmatched routes
 // app.get("*", function(req, res) {

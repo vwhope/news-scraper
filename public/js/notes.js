@@ -21,9 +21,4 @@ function saveNote(id) {
 
 
 
-// test code to delete article note from notes collection
-$("ul").on("click", "button", function(e) {
-    e.preventDefault();
-    $(this).parent().remove();
-});
 

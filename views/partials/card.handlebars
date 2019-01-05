@@ -11,12 +11,13 @@
         <p class="card-text">{{summary}}</p>
 
         <div class="saved" {{#unless saved}}hidden{{/unless}}>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target='#notesModal{{_id}}'>Article Notes</button>
-            <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', false)">Delete Saved Article</a>
+            <button type="button" class="btn btn-success" data-id="{{_id}}" data-toggle="modal" data-target='#notesModal'>Article Notes</button>
+            <button type="button" class="btn btn-danger" onclick="saveArticle('{{_id}}', false)">Delete Saved Article</button>
         </div>
 
         <div class="unsaved" {{#if saved}}hidden{{/if}}>
-            <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</a>
+            <button type="button" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</button>
+       <!-- <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</a> -->
         </div>
     </div>
     <div class="w-100"></div>

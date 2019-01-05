@@ -7,14 +7,16 @@
      <div class="col-md-12" id="home-page">
        <h1>Nutrition News</h1>
        <h5>scraped from Medical News Today</h5>
+       <br>
+       <br>
      </div>
 
      <div>
         {{#each newsFeed}}
           {{> card}}
-          {{> notes}}
         {{/each}}
-      </div>
+        {{> notesModal}}
+     </div>
 
    </div>
 </div> <!-- end container -->

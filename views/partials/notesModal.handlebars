@@ -2,22 +2,26 @@
 <div class="container">
 
   <!-- Modal -->
-  <div class="modal fade" id="notesModal{{_id}}" role="dialog">
+  <div class="modal fade" id="notesModal" role="dialog">
     <div class="modal-dialog">
 
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{title}}</h5>
+          <h5 class="modal-title" id="notesModalTitle"><!--Populated by js --></h5>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body">
-         {{> savednotes}}
+        <div>
+          <ul class="allNotes">
+            <!-- Populated by js -->
+          </ul>
+        </div>
          <hr>
-         <textarea rows="6" cols="50" id="notesText{{_id}}">Add new note here</textarea>
+         <textarea rows="6" cols="50" id="notesText">Add new note here</textarea>
         </div>
         <div class="modal-footer">
-          <button type="button" onclick="saveNote('{{_id}}')" class="btn btn-default" data-dismiss="modal">Save Note</button>
+          <button type="button" class="btn btn-default" id="notesModalSaveButton" data-dismiss="modal">Save Note</button>
         </div>
       </div>
 
