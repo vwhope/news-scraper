@@ -9,8 +9,15 @@
             </a>
         </h4>
         <p class="card-text">{{summary}}</p>
-        <a href="#" class="btn btn-success" onclick="addNote('{{_id}}')">Add a Note</a>
-        <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', false)">Delete Saved Article</a>
+
+        <div class="saved" {{#unless saved}}hidden{{/unless}}>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target='#notesModal{{_id}}'>Article Notes</button>
+            <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', false)">Delete Saved Article</a>
+        </div>
+
+        <div class="unsaved" {{#if saved}}hidden{{/if}}>
+            <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</a>
+        </div>
     </div>
     <div class="w-100"></div>
     <div class="card-footer w-100 text-muted">

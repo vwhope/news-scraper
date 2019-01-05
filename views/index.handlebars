@@ -11,24 +11,8 @@
 
      <div>
         {{#each newsFeed}}
-        <div class="card flex-row flex-wrap">
-            <div class="card-header border-0">
-                <img src="{{image}}" alt="article image" class="img-rounded" width=200; height=150>
-            </div>
-            <div class="card-block px-2">
-                <h4 class="card-title">
-                  <a href="https://www.medicalnewstoday.com{{link}}">
-                    {{title}}
-                  </a>
-                </h4>
-                <p class="card-text">{{summary}}</p>
-                <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</a>
-            </div>
-            <div class="w-100"></div>
-            <div class="card-footer w-100 text-muted">
-              {{friendlyDate date}}
-            </div>
-        </div>
+          {{> card}}
+          {{> notes}}
         {{/each}}
       </div>
 
@@ -45,4 +29,5 @@
   crossorigin="anonymous"></script>
 <script src="js/index.js"></script>
 <script src="js/saved.js"></script>
+<script src="js/notes.js"></script>
 
