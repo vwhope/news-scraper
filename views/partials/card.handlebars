@@ -10,14 +10,13 @@
         </h4>
         <p class="card-text">{{summary}}</p>
 
-        <div class="saved" {{#unless saved}}hidden{{/unless}}>
+        <div class="saved" {{#unless saved}}style="display:none"{{/unless}}>
             <button type="button" class="btn btn-success" data-id="{{_id}}" data-toggle="modal" data-target='#notesModal'>Article Notes</button>
-            <button type="button" class="btn btn-danger" onclick="saveArticle('{{_id}}', false)">Delete Saved Article</button>
+            <button type="button" class="btn btn-danger deleteSavedButton" data-id="{{_id}}">Delete Saved Article</button>
         </div>
 
-        <div class="unsaved" {{#if saved}}hidden{{/if}}>
-            <button type="button" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</button>
-       <!-- <a href="#" class="btn btn-danger" onclick="saveArticle('{{_id}}', true)">Save Article</a> -->
+        <div class="unsaved" {{#if saved}}style="display:none"{{/if}}>
+            <button type="button" class="btn btn-danger saveButton" data-id="{{_id}}">Save Article</button>
         </div>
     </div>
     <div class="w-100"></div>

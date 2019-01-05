@@ -10,9 +10,55 @@ function myFunction() {
 
 $(document).ready(function() {
 
+  // function to save Article - toggle "saved" field from false to true for specified article id in Articles collection
+  // When you click the Save Article button
+  function saveArticle(button, save) {
+
+    //let button = $(this);
+    let id = button.data("id");
+
+    $.ajax({
+        method: "POST",
+        url: "/save/",
+        data: {
+            // update saved field
+            saved: save,
+            id: id
+        }
+    })
+    // With that done
+    .then(function(data) {
+        // Log the response
+        console.log(data);
+
+        let parent = button.parent().parent();
+        let unsaved = parent.find(".unsaved");
+        let saved = parent.find(".saved");
+
+        if (save) {
+
+            saved.css("display", "block");
+            unsaved.css("display", "none");
+
+        } else {
+
+            saved.css("display", "none");
+            unsaved.css("display", "block");
+
+        }
+    });
+  }
+
+  $(".deleteSavedButton").on("click", function() {
+    saveArticle($(this), false);
+  });
+
+  $(".saveButton").on("click", function() {
+    saveArticle($(this), true);
+  });
+
   $("#notesModal").on("show.bs.modal", function(event) {
 
-    console.log("show.bs.modal");
     var button = $(event.relatedTarget);
     var articleId = button.data("id");
     var modal = $(this);
