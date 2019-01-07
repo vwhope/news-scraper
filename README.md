@@ -61,6 +61,7 @@ Run Application: [Launch news-scraper ](https://thawing-lowlands-88251.herokuapp
   * user is presented with any scraped articles that contain the user's search word
 * To clear/remove the database, select "Clear Database"
   * Use CAUTION with this option, it removes all articles and notes
+  * To re-populate database, user must select "Scrape Articles" again
 * To view news-scraper directions from within the application, click "Nutrition Scraper Directions" menu option
 
 
