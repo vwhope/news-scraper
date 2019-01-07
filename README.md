@@ -1,6 +1,6 @@
 # news-scraper
 
-### A news-scraper web app
+### A nutrition news-scraper web app
 
 Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
 
@@ -47,6 +47,15 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
  node server.js
   ```
 * in browser, navigate to "http://localhost:3000", you should see the news-scraper application
+![Home Page](public/images/newsScraper_main.jpg)
+
+**To use news-scaper**
+* To populate the database with nutrition articles from Medical News Today, click "Scrape Articles" menu option
+  * when scrape is complete, user will see list of articles, sorted by date
+  * from this list, user may save an article, add/remove notes, remove article from saved status
+* To view ONLY saved articles, click the "Saved Articles" menu option
+  * from this l ist the use
+
 
 **Resource Contributors**
 * Home page background image: [Unsplash: Apples by Holly Mindrup](https://unsplash.com/photos/-uPDkAK6f8A)
@@ -55,4 +64,6 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
 * Improve UI so all text displays with the same width
 * Add Progress bar when scraping articles so user knows the application is working
 * Expand "search" options
+* In production - may remove the Clear Database option OR add "are you sure" option
+* Sort "Saved Articles" by date to match "Scrape Articles" sort
 
