@@ -47,6 +47,7 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
  node server.js
   ```
 * in browser, navigate to "http://localhost:3000", you should see the news-scraper application
+
 ![Home Page](public/images/newsScraper_main.jpg)
 
 **To use news-scaper**
@@ -54,7 +55,13 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
   * when scrape is complete, user will see list of articles, sorted by date
   * from this list, user may save an article, add/remove notes, remove article from saved status
 * To view ONLY saved articles, click the "Saved Articles" menu option
-  * from this l ist the use
+  * from this list the user may add/remove notes, remove article from saved status
+* To seach scraped article titles for a word, select "Search Articles" menu option
+  * enter search word, click submit
+  * user is presented with any scraped articles that contain the user's search word
+* To clear/remove the database, select "Clear Database"
+  * Use CAUTION with this option, it removes all articles and notes
+* To view news-scraper directions from within the application, click "Nutrition Scraper Directions" menu option
 
 
 **Resource Contributors**
@@ -66,4 +73,6 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
 * Expand "search" options
 * In production - may remove the Clear Database option OR add "are you sure" option
 * Sort "Saved Articles" by date to match "Scrape Articles" sort
+* Improve error handling
+* Add tests
 
