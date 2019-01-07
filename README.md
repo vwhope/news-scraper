@@ -46,7 +46,7 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
  ```
  node server.js
   ```
-* in browser, navigate to "http://localhost:3000", you should see the news-scraper application
+* In browser, navigate to "http://localhost:3000", you should see the news-scraper application
 
 ![Home Page](public/images/newsScraper_main.jpg)
 
