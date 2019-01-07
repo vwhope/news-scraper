@@ -2,7 +2,7 @@
 
 ### A nutrition news-scraper web app
 
-Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
+Run Application: [Launch news-scraper ](https://thawing-lowlands-88251.herokuapp.com/)
 
 **Features**
 * Scrape new articles from Medical News Today - nutrition
