@@ -1,4 +1,5 @@
-/* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+/* Toggle between adding and removing the "responsive" class
+// to topnav when the user clicks on the hamburger icon */
 function myFunction() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -10,8 +11,10 @@ function myFunction() {
 
 $(document).ready(function() {
 
-  // function to save Article - toggle "saved" field from false to true for specified article id in Articles collection
-  // When you click the Save Article button
+  // function to save an Article
+  // when user clicks the "Save Article" button,
+  // the "saved" field toggles from false to true
+  // for specified article id in Article collection
   function saveArticle(button, save) {
 
     //let button = $(this);
@@ -110,7 +113,7 @@ $(document).ready(function() {
         }
       }
 
-      // Before adding our click handler, remove any
+      // Before adding click handler, remove any
       // that may have been previously added
       modal.find("#notesModalSaveButton").off("click");
 
@@ -142,7 +145,7 @@ $(document).ready(function() {
   });
 
 
-  /// begin word search - WORKS so far
+  // begin word search
   $("#submitWordButton").click(
     function(event) {
       event.preventDefault();
@@ -166,7 +169,7 @@ $(document).ready(function() {
       $("#searchResult").append(res);
 
       // TODO: Is there a better way to do this?
-      // This is duplicated in document.ready()
+      // This is duplicated code in document.ready() - function saveArticle
 
       $(".deleteSavedButton").on("click", function() {
         saveArticle($(this), false);
@@ -182,6 +185,6 @@ $(document).ready(function() {
   }
 
 
- /// end word search
+ // end word search
 
 });

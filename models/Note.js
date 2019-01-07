@@ -13,7 +13,7 @@ var NoteSchema = new Schema({
 
   // `article` is an object that stores an article id
   // The ref property links the ObjectId to the article model
-  // This allows populating the Article with associated notes
+  // This allows populating the Article with associated Notes
   article: {
     type: Schema.Types.ObjectId,
     ref: "Article"
@@ -21,7 +21,7 @@ var NoteSchema = new Schema({
 
 });
 
-// This creates the model from above schema, using mongoose's model method
+// Create the model from above schema, using mongoose's model method
 var Note = mongoose.model("Note", NoteSchema);
 
 // Export the Note model

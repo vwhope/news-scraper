@@ -1,11 +1,13 @@
 // Require all models
 var db = require("../models");
+//  Require all scraping tools
 var axios = require("axios");
 var cheerio = require("cheerio");
+// Require Mongoose for schema and querying
 var mongoose = require("mongoose");
 
 module.exports = function(app) {
-    // Scrape data from Medical News Today, load HTML into $, create record in the mongodb db - WORKS
+    // Scrape data from Medical News Today, load HTML into $, create record in the mongodb db
     app.get("/scrape", function(req, res) {
 
         // Using Axios, request nutrition news from `medicalnewstoday.com`
@@ -60,8 +62,7 @@ module.exports = function(app) {
     Promise.all(threads).then(function (promises) {
 
         // Get all articles from the db server side
-       // db.Article.find({}).sort({date: 'desc'})
-       db.Article.find(/*{ saved: { $eq: false } }*/).sort({date: 'desc'})
+        db.Article.find(/*{ saved: { $eq: false } }*/).sort({date: 'desc'})
         .then(function(dbArticle) {
             // If article(s) found, send back to client side
             res.render("index", { newsFeed : dbArticle });
@@ -70,12 +71,14 @@ module.exports = function(app) {
             // If an error occurred, send it to the client
             res.json(err);
         });
-        //res.send("Scrape completed") - need to send something to client to let know scrape completed
+        // res.send("Scrape completed")
+        // TODO: send message to client to let know scrape completed
+        // OR that scrape is doing something
     });
   });
  }); // end app.get
 
-    // GET ALL SAVED articles from db - WORKS
+    // GET ALL SAVED articles from db
     app.get("/saved", function(req, res) {
         db.Article.find( { saved: { $eq: true } } )
         .then(function(dbArticle) {
@@ -96,25 +99,24 @@ module.exports = function(app) {
     // FYI - to remove an article pass the id that you want to remove
     // db.articles.remove({ _id: ObjectId"5c2e53580b55ca0454c16646"})
 
-    // However, in this case, I may not want to remove it from the db,
+    // However, in this case, I will not remove it from the db,
     // but instead:
     // 1. toggle the "saved" field from True to False so it no longer shows up in the SAVED list
     // 2. clear any notes data associated with that article ID
-    // OR I could delete it from the DB and any associated Note
 
-    // REMOVE database newsScraper - WORKS
+    // REMOVE database newsScraper
     app.get("/clear", function(req, res) {
         mongoose.connection.dropDatabase();
         res.send("Database dropped.");
     });
 
 
-    // SAVE article - WORKS whether saving or unsaving
+    // SAVE article - works for BOTH saving and unsaving
     app.post("/save", function(req, res) {
 
         db.Article.updateOne( { _id: req.body.id }, {$set: {"saved": req.body.saved }})
         .then(function(dbArticle) {
-            // If we were able to successfully update an Article, send it back to the client
+            // If able to successfully update an Article, send it back to the client
             res.json(dbArticle);
         })
         .catch(function(err) {
@@ -124,7 +126,8 @@ module.exports = function(app) {
     });
 
 
-    // SAVE/UPDATE Article's associated Note - WORKS
+    // SAVE/UPDATE Article's associated NOTE(s)
+    // one article can have many notes
     app.post("/notes/:id", function(req, res) {
         // Create a new note and pass the req.body to the entry
         var result = {};
@@ -133,7 +136,7 @@ module.exports = function(app) {
 
         db.Note.create(result)
         .then(function(dbArticle) {
-            // If we were able to successfully update an Article, send it back to the client
+            // If able to successfully update an Article, send it back to the client
             res.json(dbArticle);
         })
         .catch(function(err) {
@@ -142,6 +145,7 @@ module.exports = function(app) {
         });
     });
 
+    // Delete a specific NOTE
     app.post("/deleteNote/:id", function(req, res) {
 
         db.Note.remove({ _id: req.params.id})
@@ -153,13 +157,13 @@ module.exports = function(app) {
         });
     });
 
-    // Route to get specific Article by id, populate it with its note
+    // GET specific Article by id, then populate with its note(s)
     app.get("/articles/:id", function(req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+    // Using the id passed in the id parameter, query the db for matching id
         db.Article.findOne({ _id: req.params.id })
         .then(function(dbArticle) {
 
-            // If we were able to successfully find an Article with the given id, send it back to the client side
+            // If successfully find an Article with the given id, send it back to the client side
 
             db.Note.find({article: dbArticle._id})
             .then(function(notes) {
@@ -181,20 +185,19 @@ module.exports = function(app) {
         });
     });
 
-    // Get articles whose title contain the search word
-    // GET ALL SAVED articles from db - WORKS
-
+    // Render Search Page
     app.get("/search/", function(req, res) {
         res.render("search");
       });
 
-
+    // Using the user's search word, query db for articles whose title includes that word
     app.get("/search/:word", function(req, res) {
 
         let searchword = req.params.word
-        // create index for a text search - If this index will persist
-        // I don't want to do it every time - just once - so it wouldn't go here!
-        //db.Article.createIndex( { title: "text"})
+        // To create index for a text search it should look like this:
+        // db.Article.createIndex( { title: "text"})
+        // but not sure why - I have to do this from Mongo shell command line
+        // db.articles.createIndex( { title: "text"})
 
         // get articles that have "searchword" in their title
         // need to pass in variable that has the user's searchword
@@ -210,10 +213,4 @@ module.exports = function(app) {
       });
     });
 
-
-
-// Render 404 page for any unmatched routes
-// app.get("*", function(req, res) {
-//     res.render("404");
-// });
 }; // end exports

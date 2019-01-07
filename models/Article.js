@@ -42,7 +42,12 @@ var ArticleSchema = new Schema({
   }
 });
 
-// This creates the Article model from above schema, using mongoose's model method
+// Add index to allow "text" search for a word within article title
+// If clear database, you have restart application to get "search" to work again
+// If the index doesn't rebuild, the search option won't work
+ArticleSchema.index( { title: "text"});
+
+// Create the Article model from above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
 
 // Export the Article model

@@ -1,4 +1,4 @@
-// Save Note when click the "save note" button
+// Save Note when user clicks the "save note" button
 
 function saveNote(id) {
     // POST request to save note text (body) for specific article
