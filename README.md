@@ -50,7 +50,7 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
 
 ![Home Page](public/images/newsScraper_main.jpg)
 
-**To use news-scaper**
+**To use news-scraper**
 * To populate the database with nutrition articles from Medical News Today, click "Scrape Articles" menu option
   * when scrape is complete, user will see list of articles, sorted by date
   * from this list, user may save an article, add/remove notes, remove article from saved status
@@ -66,13 +66,14 @@ Run Application: [Launch news-scraper ](https://.us.herokuapp.com/)
 
 **Resource Contributors**
 * Home page background image: [Unsplash: Apples by Holly Mindrup](https://unsplash.com/photos/-uPDkAK6f8A)
+* News scraped from: [Medical News Today](https://www.medicalnewstoday.com/categories/nutrition-diet)
 
 **Future Enhancement Ideas**
 * Improve UI so all text displays with the same width
 * Add Progress bar when scraping articles so user knows the application is working
 * Expand "search" options
-* In production - may remove the Clear Database option OR add "are you sure" option
+* In production - may remove the Clear Database option OR add "confirmation" option
 * Sort "Saved Articles" by date to match "Scrape Articles" sort
-* Improve error handling
-* Add tests
+* Improve error handling/messaging
+* Add test cases
 
