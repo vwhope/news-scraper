@@ -141,4 +141,47 @@ $(document).ready(function() {
     });
   });
 
+
+  /// begin word search - WORKS so far
+  $("#submitWordButton").click(
+    function(event) {
+      event.preventDefault();
+      var userWord =  $("#userWord").val(); // get word user entered into search box
+      console.log(userWord);
+      searchTitle(userWord);
+    }
+  );
+
+  function searchTitle (word) {
+    console.log("I ran the searchTitle function");
+    console.log("search word = " + word);
+    $.ajax({
+      method: "GET",
+      url: "/search/" + word
+    })
+    .then(function(res) {
+      console.log(res);
+
+      $("#searchResult").empty();
+      $("#searchResult").append(res);
+
+      // TODO: Is there a better way to do this?
+      // This is duplicated in document.ready()
+
+      $(".deleteSavedButton").on("click", function() {
+        saveArticle($(this), false);
+      });
+
+      $(".saveButton").on("click", function() {
+        saveArticle($(this), true);
+      });
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+  }
+
+
+ /// end word search
+
 });

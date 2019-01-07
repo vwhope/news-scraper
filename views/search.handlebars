@@ -5,16 +5,22 @@
    <!-- main content area -->
    <div class="row">
      <div class="col-md-12" id="home-page">
-       <h1>SAVED Nutrition News</h1>
-       <h5>scraped from Medical News Today</h5>
+       <h1>Search Article Titles by Word</h1>
+       <!--<h5>enter search word below</h5> -->
+       <br>
+       <br>
+       <form>
+           Search Word:
+           <input type="search" id="userWord" name="wordSearch"> <!-- user's word -->
+           <input type="submit" id="submitWordButton" name="search" text="search" > <!-- submit button -->
+       </form>
        <br>
        <br>
      </div>
 
-     <div>
-        {{> feed}}
-     </div>
+     <div id="searchResult">
 
+     </div>
    </div>
 </div> <!-- end container -->
 

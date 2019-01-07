@@ -80,7 +80,7 @@ module.exports = function(app) {
         db.Article.find( { saved: { $eq: true } } )
         .then(function(dbArticle) {
             // If articles successfully found, send back to client
-            res.render("saved", { savedNewsFeed : dbArticle });
+            res.render("saved", { newsFeed : dbArticle });
         })
         .catch(function(err) {
             // If an error occurred, send it to the client
@@ -180,6 +180,37 @@ module.exports = function(app) {
             res.json(err);
         });
     });
+
+    // Get articles whose title contain the search word
+    // GET ALL SAVED articles from db - WORKS
+
+    app.get("/search/", function(req, res) {
+        res.render("search");
+      });
+
+
+    app.get("/search/:word", function(req, res) {
+
+        let searchword = req.params.word
+        // create index for a text search - If this index will persist
+        // I don't want to do it every time - just once - so it wouldn't go here!
+        //db.Article.createIndex( { title: "text"})
+
+        // get articles that have "searchword" in their title
+        // need to pass in variable that has the user's searchword
+        db.Article.find( { $text: { $search: searchword } } )
+
+      .then(function(dbArticle) {
+            // If search is successful, send back articles that match search to client
+            res.render("partials/feed", { newsFeed : dbArticle });
+      })
+      .catch(function(err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+      });
+    });
+
+
 
 // Render 404 page for any unmatched routes
 // app.get("*", function(req, res) {

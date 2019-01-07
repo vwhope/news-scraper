@@ -11,7 +11,7 @@ var NoteSchema = new Schema({
       trim: true
   },
 
-  // `article` is an object that stores a article id
+  // `article` is an object that stores an article id
   // The ref property links the ObjectId to the article model
   // This allows populating the Article with associated notes
   article: {
